@@ -1,0 +1,26 @@
+{
+  "GeneratedAt": "2026-06-22T09:59:00.0000000Z",
+  "ProjectPath": ".",
+  "Summary": {
+    "TotalFindings": 1,
+    "CveCount": 0,
+    "CweCount": 1,
+    "BySeverity": { "mandatory": 0, "optional": 0, "potential": 1 },
+    "ByCategory": { "Code Quality": 1 },
+    "TotalRulesAssessed": 59,
+    "RulesPassed": 58
+  },
+  "CveFindings": [],
+  "CweFindings": [
+    {
+      "Id": "CWE-775",
+      "Name": "Missing Release of File Descriptor or Handle after Effective Lifetime",
+      "Category": "Code Quality",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product does not release a file descriptor or handle after its effective lifetime has ended, i.e., after the file descriptor/handle is no longer needed.",
+      "Files": ["src/Services/JsonFileProductService.cs"],
+      "Explanation": "In JsonFileProductService.AddRating() (line 48-55), a Utf8JsonWriter object is instantiated without a 'using' statement and is never explicitly disposed. Utf8JsonWriter implements IDisposable and its Dispose() method flushes any remaining buffered data. Failing to dispose it may result in incomplete JSON being written to the output file and the underlying writer handle not being released properly."
+    }
+  ]
+}

@@ -239,7 +239,7 @@
   "rules": {
     "Runtime.0001": {
       "id": "Runtime.0001",
-      "description": "Out of support .NET target framework is detected.\n\nIf you are targeting Managed Instance on Azure App Service, target .NET 10 for best cloud experience or validate on .NET 4.8/3.5 (preinstalled). Use .NET Upgrade Assistant and run staging validation on Managed Instance.\n\n.NETCoreApp or .NET 5.0 target frameworks are out of support and Azure App Service sandbox does not have runtime installed for them. It is recommended to upgrade to .NET 8\u002B or deploy your application in a self-contained mode which would allow you to bring framework dependencies with your application.\n\nAlternatively, you could deploy your application to Azure App Service as a container and manage the contents of the container yourself, while keeping other benefits of App Service.\n\nOther alternatives, depending on the architecture of the application, could be to host your app in Azure VM, ACR or Azure Kubernetes service.",
+      "description": "Out of support .NET target framework is detected.\n\nIf you are targeting Managed Instance on Azure App Service, target .NET 10 for best cloud experience or validate on .NET 4.8/3.5 (preinstalled). Use .NET Upgrade Assistant and run staging validation on Managed Instance.\n\n.NETCoreApp or .NET 5.0 target frameworks are out of support and Azure App Service sandbox does not have runtime installed for them. It is recommended to upgrade to .NET 8+ or deploy your application in a self-contained mode which would allow you to bring framework dependencies with your application.\n\nAlternatively, you could deploy your application to Azure App Service as a container and manage the contents of the container yourself, while keeping other benefits of App Service.\n\nOther alternatives, depending on the architecture of the application, could be to host your app in Azure VM, ACR or Azure Kubernetes service.",
       "title": "Out of support .NET target framework is detected",
       "severity": "mandatory",
       "effort": 3,
@@ -315,5 +315,21 @@
       ],
       "labels": []
     }
-  }
+  },
+  "security": [
+    {
+      "category": "Code Quality",
+      "title": "Missing Release of File Descriptor or Handle after Effective Lifetime",
+      "id": "CWE-775",
+      "storyPoint": 3,
+      "evidence": {
+        "explanation": "In JsonFileProductService.AddRating() (line 48-55), a Utf8JsonWriter object is instantiated without a 'using' statement and is never explicitly disposed. Utf8JsonWriter implements IDisposable and its Dispose() method flushes any remaining buffered data. Failing to dispose it may result in incomplete JSON being written to the output file and the underlying writer handle not being released properly.",
+        "files": [
+          "src/Services/JsonFileProductService.cs"
+        ]
+      },
+      "severity": "potential",
+      "description": "The product does not release a file descriptor or handle after its effective lifetime has ended, i.e., after the file descriptor/handle is no longer needed."
+    }
+  ]
 }
